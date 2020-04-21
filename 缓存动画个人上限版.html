@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .one {
+            width: 100px;
+            height: 100px;
+            background-color: pink;
+            position: absolute;
+            top: 50px;
+            left: 0px;
+        }
+        .two {
+            width: 100px;
+            height: 100px;
+            background-color: green;
+            position: absolute;
+            top: 300px;
+            left: 300px;
+        }
+        .three {
+            width: 500px;
+            height: 300px;
+            background-color: mediumvioletred;
+            position: absolute;
+            top: 100px;
+            left: 700px;
+        }
+        .four {
+            width: 200px;
+            height: 200px;
+            background-color: blue;
+            position: absolute;
+            top: 30px;
+            left: 300px;
+        }
+    </style>
+</head>
+<body>
+<input type="button" value="左右移动到400" id="lr400"/>
+<input type="button" value="左右移动到800" id="lr800"/>
+<input type="button" value="上下移动到200" id="tb200"/>
+<input type="button" value="上下移动到400" id="tb400"/>
+<div class="one" id="box1"></div>
+<div class="two" id="box2"></div>
+<div class="three" id="box3"></div>
+<div class="four" id="box4"></div>
+</body>
+<script>
+
+
+    //1.1根据id获取元素
+    var box1 = document.getElementById('box1');
+    var box2 = document.getElementById('box2');
+    var box3 = document.getElementById('box3');
+    var box4 = document.getElementById('box4');
+
+
+
+    //1.2跟id获取按钮,为每一个按钮注册点击事件,并添加事件处理函数
+    //左右移动到400
+    document.getElementById('lr400').onclick = function (  ) {
+        animationSlow(box1,{
+            width:Math.ceil(Math.random()*700),
+            height:Math.ceil(Math.random()*700),
+            left:Math.ceil(Math.random()*900),
+            top:Math.ceil(Math.random()*700),
+            opacity:0.6,
+            zIndex:1,
+            borderRadius: Math.ceil(Math.random()*700/2),
+        },function (  ) {
+            animationSlow(box1,{
+                width:Math.ceil(Math.random()*700),
+                height:Math.ceil(Math.random()*700),
+                left:Math.ceil(Math.random()*900),
+                top:Math.ceil(Math.random()*700),
+                opacity:0.9,
+                borderRadius: Math.ceil(Math.random()*700/2),
+                backgroundColor: newColor (  ),
+            },function (  ) {
+                animationSlow(box1,{
+                    width:150,
+                    height:233,
+                    left:50,
+                    top:200,
+                    opacity:0.3,
+                    borderRadius: 150/5,
+                    backgroundColor: newColor (  ),
+                })
+            })
+        });
+    }
+
+    //左右移动到800
+    document.getElementById('lr800').onclick = function (  ) {
+        animationSlow(box4,{
+            width:Math.ceil(Math.random()*700),
+            height:Math.ceil(Math.random()*700),
+            left:Math.ceil(Math.random()*900),
+            top:Math.ceil(Math.random()*700),
+            opacity:0.6,
+            zIndex:1,
+            borderRadius: Math.ceil(Math.random()*700/2),
+        },function (  ) {
+            animationSlow(box4,{
+                width:Math.ceil(Math.random()*700),
+                height:Math.ceil(Math.random()*700),
+                left:Math.ceil(Math.random()*900),
+                top:Math.ceil(Math.random()*700),
+                opacity:0.9,
+                borderRadius: Math.ceil(Math.random()*700/2),
+                backgroundColor: newColor (  ),
+            },function (  ) {
+                animationSlow(box4,{
+                    width:150,
+                    height:233,
+                    left:50,
+                    top:200,
+                    opacity:0.3,
+                    borderRadius: 150/5,
+                    backgroundColor: newColor (  ),
+                })
+            })
+        });
+    }
+
+    //上下移动到200
+    document.getElementById('tb200').onclick = function (  ) {
+        animationSlow(box2,{
+            width:Math.ceil(Math.random()*700),
+            height:Math.ceil(Math.random()*700),
+            left:Math.ceil(Math.random()*900),
+            top:Math.ceil(Math.random()*700),
+            opacity:0.8,
+            zIndex:1,
+            borderRadius: Math.ceil(Math.random()*700/2),
+        },function (  ) {
+            animationSlow(box2,{
+                width:Math.ceil(Math.random()*700),
+                height:Math.ceil(Math.random()*700),
+                left:Math.ceil(Math.random()*900),
+                top:Math.ceil(Math.random()*700),
+                opacity:0.9,
+                borderRadius: Math.ceil(Math.random()*700/2),
+                backgroundColor: newColor (  ),
+            },function (  ) {
+                animationSlow(box2,{
+                    width:150,
+                    height:233,
+                    left:50,
+                    top:200,
+                    opacity:0.3,
+                    borderRadius: 150/5,
+                    backgroundColor: newColor (  ),
+                })
+            })
+        });
+    }
+
+    //上下移动到400
+    document.getElementById('tb400').onclick = function (  ) {
+        animationSlow(box3,{
+            width:Math.ceil(Math.random()*700),
+            height:Math.ceil(Math.random()*700),
+            left:Math.ceil(Math.random()*900),
+            top:Math.ceil(Math.random()*700),
+            opacity:0.6,
+            zIndex:1,
+            borderRadius: Math.ceil(Math.random()*700/2),
+        },function (  ) {
+            animationSlow(box3,{
+                width:Math.ceil(Math.random()*700),
+                height:Math.ceil(Math.random()*700),
+                left:Math.ceil(Math.random()*900),
+                top:Math.ceil(Math.random()*700),
+                opacity:0.8,
+                borderRadius: Math.ceil(Math.random()*700/2),
+                backgroundColor: newColor (  ),
+            },function (  ) {
+                animationSlow(box3,{
+                    width:150,
+                    height:233,
+                    left:50,
+                    top:200,
+                    opacity:0.4,
+                    borderRadius: 150/5,
+                    backgroundColor: newColor (  ),
+                })
+            })
+        });
+    }
+
+    // 3.声明一个函数来完成相关的功能
+    function animationSlow (obj,attrs,fn) {
+        //3.1每次开始前,先清除上一个定时器
+        clearInterval(obj.timeID);
+        //3.2开始定时器
+        obj.timeID = setInterval(function (  ) {
+
+            /* 4.开关思想:
+            1.每次移动之前,假设本次移动的所有属性都到达终点,  isAllOk =true;
+            2.验证假设是否成立;只要有任何属性没有到达终点,假设被推翻  isAllOk = false;
+            */
+            var isAllOk = true;   //每次移动之前,都进行一次假设,假设所有属性的属性值都达到目标
+
+            //3.3通过循环遍历获取参数对象中的属性和属性值
+            for(var key in attrs)
+            {
+                console.log ( key );   //对象的属性名字符串
+                console.log ( attrs[ key ] );   //属性值
+                var attr = key    //获取本次想要修改的的属性
+                var target = attrs[key];   //获取本次想要修改的属性的属性值
+                if(attr == 'zIndex'){
+                    obj.style[attr] = target;  //修改对象的层级
+                }
+                else if (attr == 'backgroundColor'){
+                    obj.style[attr] = target;   //修改颜色
+                }
+                else if(attr == 'opacity'){
+                    //3.4获取元素当前的属性值(获取元素当前的位置),获取到的属性值是字符串类型,需要转换为number类型
+                    var current = parseFloat(getSole(obj,attr))*100 ;
+                    //3.5计算本次需要改变的量
+                    target *= 100;
+                    var step = (target - current)/10;
+                    //3.6取整
+                    step = step>0?Math.ceil(step):Math.floor(step);
+                    //3.7开始移动
+                    current += step;
+                    obj.style[attr] = current/100 ;  //透明度取值范围是0-1,并且没有单位
+                    //3.8通过开关思想进行判断:只要有任何一个属性没有到达终点：开关假设被推翻
+                    if(target != current){
+                        isAllOk = false;  ////只要有任何一个属性没有到达目标,则假设被推翻  isAllOk = false;
+                    }
+                }
+                else{
+                    //3.4获取元素当前的属性值(获取元素当前的位置),获取到的属性值是字符串类型,需要转换为number类型
+                    current = parseInt(getSole(obj,attr));
+                    //3.5计算本次需要改变的量
+                     step = (target-current)/10;
+                    //3.6取整
+                    step = step>0?Math.ceil(step):Math.floor(step);
+                    //3.7开始移动
+                    current += step;
+                    obj.style[attr] = current + 'px';
+                    //3.8通过开关思想进行判断:只要有任何一个属性没有到达终点：开关假设被推翻
+                    if(target != current){
+                        isAllOk = false;  //只要有任何一个属性没有到达目标,则假设被推翻  isAllOk = false;
+                    }
+                }
+            }
+            /*3.9每一次循环结束节后判断是否所以属性都达到目标,如果达到,则假设成立,结束定时器
+            如果不成立,则进行下一次循环 */
+            if(isAllOk == true){
+                clearInterval(obj.timeID);
+                if(typeof fn == 'function'){
+                    fn();
+                }
+            }
+
+        },50)
+    }
+    //5.获取元素样式属性兼容性处理
+    function getSole (obj,attr) {
+        if(obj.currentStyle){
+            return obj.currentStyle[attr];
+        }
+        else{
+            return window.getComputedStyle(obj,null)[attr];
+        }
+    }
+    //颜色十六进制变化
+    function newColor (  ) {
+        var str = ['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'];
+        var color = "#";
+        for(var i=0;i<6;i++)
+        {
+            color += str[Math.floor(Math.random()*16)];
+        }
+        console.log ( color );
+        return color;
+    }
+</script>
+</html>

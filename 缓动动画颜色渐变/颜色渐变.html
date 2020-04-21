@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    #p1 {
+        background-color: rgb(230, 119, 255);
+    }
+    #p2 {
+        background-color: rgb(24, 233, 59) ;
+    }
+    #p3 {
+        background-color: #ff00ea ;
+    }
+    p {
+        width: 200px;
+        height: 200px;
+        display: inline-block;
+    }
+</style>
+<body>
+<button id="btn" style="display:block;">开始</button>
+<p id="p1"></p>
+<p id="p2"></p>
+<p id="p3"></p>
+<script>
+    var p1 = document.getElementById('p1');
+    var p2 = document.getElementById('p2');
+    var p3 = document.getElementById('p3');
+    //开始动作
+    document.getElementById('btn').onclick = function (  ) {
+        gradual(p1,'#38308c');
+        gradual(p2,'#38308c');
+        gradual(p3,'#38308c');
+    }
+
+    /**元素颜色渐变
+     * @param ele 元素
+     * @param targetColor 目标颜色
+     * @param step  渐变步数，默认10,数值与渐变数值成正比（数值越小，渐变速度越快）
+     */
+    function gradual(ele, targetColor , step = 20) {
+        //清除定时器
+        clearInterval(ele.timeID);
+        //获取目标颜色数值
+        targetColor = getColorList(targetColor);
+        //开始定时器
+        ele.timeID = setInterval ( function () {
+        //获取当前背景颜色,转换为RBG数组
+        ele.rgbArr = getColorList(window.getComputedStyle ( ele, null )[ 'background-color' ]);
+        //转换当前颜色为RBG数组
+        //申明变量,计算每步的差值,(目标颜色-当前颜色)/10
+            var sR = (targetColor[0]-ele.rgbArr[0])/step;
+            var sG = (targetColor[1]-ele.rgbArr[1])/step;
+            var sB = (targetColor[2]-ele.rgbArr[2])/step;
+            //取整
+            sR = sR > 0 ? Math.ceil(sR):Math.floor(sR);
+            sG = sG > 0 ? Math.ceil(sG):Math.floor(sG);
+            sB = sB > 0 ? Math.ceil(sB):Math.floor(sB);
+            //赋值
+            ele.style.backgroundColor = 'rgb('+parseInt((sR+ele.rgbArr[0]))+','+parseInt((sG+ele.rgbArr[1]))+','+parseInt((sB+ele.rgbArr[2]))+')';
+            if ( sR == 0 && sG ==0 && sB == 0 ){// 判断是否和目标颜色一样
+                clearInterval(ele.timeID);
+            }
+        }, 50 )
+    }
+
+    /**RGB转换为RGB数组
+     * @param Color RBG颜色（数值，百分比） or Hex颜色   hsl颜色不支持
+     * @return Color RGB颜色数组
+     */
+    function getColorList ( Color ) {
+        if(Color.indexOf('%') != -1){//百分比RGB颜色
+            Color = Color.replace('rgb(','').replace(')','').split('%, ');//获取R,G,B数组
+            Color[2] = Color[2].replace('%','');
+            for (var i =0; i < Color.length; i++) {
+                Color[i] = parseInt((Color[i]*255)/100);
+            }
+        }else if(Color.indexOf('#') != -1){//Hex颜色
+            Color = Color.replace('#','');//替换掉#，便于循环
+            var temp = []//生产一个盒子
+            for (var i = 0; i < 3; i++) {//隔两位取值
+                temp[i] = parseInt(Color.substr(i*2,2),16);
+            }
+            Color = temp;
+        }else {//数值RGB颜色
+            Color = Color.replace('rgb(','').replace(')','').split(', ');//获取R,G,B数组
+            for(var i = 0; i < Color.length; i++) {//将RGB转换16进制颜色
+                Color[i] = parseInt(Color[i]);//转成数字
+            }
+        }
+        return Color;
+            //转换进制
+            // hexArr[i] = hexColor[i] < 10 ? "0" + hexColor[i].toString ( 16 ) : hexColor[i].toString ( 16 );
+    }
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,218 @@
+body,
+a,
+i,
+span,
+ul,
+li,
+div,
+p,
+input,
+button,
+h1,
+h2 {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font: 12px/100% '微软雅黑';
+}
+
+a {
+    color: #000;
+    text-decoration: none;
+}
+
+li {
+    list-style: none;
+}
+
+input {
+    border: 0 none;
+    outline: 0 none;
+}
+
+i {
+  font-style: normal;
+}
+/*初始化代码*/
+
+#bigbox {
+    /*width: 312px;*/
+    /*height: 493px;*/
+    width: 900px;
+    height: 500px;
+    margin: 0 auto;
+    position: relative;
+}
+
+#bigbox .row {
+    height: 120px;
+    border-top: 1px solid #000;
+}
+
+#bigbox ul {
+    position: absolute;
+    width: 302px;
+    height: 483px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background-color: #fff;
+}
+
+#bigbox ul li:first-child {
+    border-top: 0 none;
+}
+
+#bigbox .row a {
+    height: 120px;
+    width: 100px;
+    float: left;
+    border-right: 1px solid #000;
+    cursor: default;
+    font-size: 90px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 120px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 100%;
+}
+
+#bigbox li.row:last-child a {
+    cursor: pointer;
+}
+#bigbox .row a:last-child {
+    border-right:  0 none;
+}
+
+.black {
+    background-color: #000;
+}
+
+#mask,
+#start {
+    width: 80px;
+    height: 80px;
+    border-radius: 100%;
+    position: absolute;
+    background-color: #000;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+#start {
+    height: 70px;
+    width: 70px;
+    cursor: pointer;
+    background-color: #000;
+    color: #fff;
+    font-size: 20px;
+    line-height: 40px;
+}
+
+#tipsBox {
+    width: 200px;
+    height: 300px;
+    border: 4px dashed #000;
+    position: absolute;
+    top: 50px;
+    text-align: center;
+    opacity: 0;
+}
+
+#tipsBox h1 {
+    margin-top: 50px;
+    font-size: 24px;
+}
+
+#tipsBox h2 {
+    font-size: 20px;
+    margin-top: 24px;
+}
+
+#tipsBox h3 {
+    margin-top: 50px;
+    font-size: 24px;
+}
+
+#failedBox {
+    width: 500px;
+    height: 200px;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    background-color: rgba(255,255,255,1);
+    color: #000;
+    z-index: 2;
+}
+
+#failedBox h3 {
+    font-size: 24px;
+    text-align: center;
+    line-height: 40px;
+}
+
+#failedBox p {
+    font-size: 15px;
+    color: #646161;
+    text-align: center;
+    margin-top: 10px;
+}
+
+#keyList {
+    width: 200px;
+    height: 60px;
+    position: absolute;
+    left: 0;
+    top: 400px;
+    opacity: 0;
+}
+
+#keyList div {
+    width: 60px;
+    height: 60px;
+    background-color: #000;
+    color: #fff;
+    float: left;
+    margin-right: 5px;
+    line-height: 60px;
+    text-align: center;
+    font-size: 40px;
+}
+
+#keyList div:first-child {
+    margin-left: 5px;
+}
+
+#howPlay {
+    width: 450px;
+    height: 190px;
+    padding: 20px 10px 0;
+    position: fixed;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    border: 4px dashed #000;
+    font-size: 16px;
+}
+
+#howPlay p {
+    line-height: 20px;
+    margin-bottom: 20px;
+}
+
+#pic {
+    width: 200px;
+    height: 100px;
+    position: absolute;
+    top: -110px;
+    left: 0;
+}
+
+#pic img {
+    height: 100%;
+}

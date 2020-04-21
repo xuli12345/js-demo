@@ -1,0 +1,239 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>五子棋</title>
+    <style>
+        div,table,tr,th{
+            margin:0;
+            padding:0;
+        }
+        table{
+            border:1px solid black;
+        }
+        th{
+            border:1px solid black;
+            width:30px;
+            height:30px;
+        }
+
+    </style>
+</head>
+<body>
+
+<script>
+                                //关于bug和反馈，希望你们能在内通网联系我，有什么想法也可以，问题也行
+
+    var a=parseInt(prompt('请输入棋盘几乘几表格10到30之间\n里面有一个盒子有bug我设置了不能点击\n' +
+        '    暂时还没发现其他问题\n' +
+        '    代码里面有点绕，看起来也麻烦，我注释了，判定机制没精简'));        //+prompt('请输入棋盘几乘几表格');
+    //由于我设置的横纵表格个数一致所以只填一次，如果要分开就改动判定机制里的横竖变量，里面用 的a
+
+    //表格封装在最下面，可以实现循环利用，只要用  父元素.appendchild（pox（横向表格个数,竖向表格个数））方法即可将表格添加进入父元素中，自己设置属性和样式
+
+    //也可以把appendchild封装进去留一个pox（父元素，横向表格个数，竖向表格个数）{}调用
+
+    //封装大概从这里开始 function（第一个参数是要插入的父元素，横向n个表格，竖向n个表格）{ 调用直接执行 因为我想不到更好的能重复利用的例子，干脆封完，实现随时调用}；
+    document.body.appendChild(pox(a,a));          //将表格添加进body
+    var table1=document.getElementsByTagName('table')[0];
+    table1.cellSpacing='0';                       //表格的样式
+    var num=0;                                    //用于点击事件计数来区分红蓝
+    var times;                                    //用于存放格子的个数标记，也就是下标+1
+
+	//这里计数的方法可以统一，因为每次点击执行判定，否则清零，这样就要做到计数的数目是一样的，5或者4胜利
+
+    var xxxnumber=0;                                //用于存储判定横向相同个数             //红色方判定
+    var yyynumber=0;                                //用于存储判定纵向相同个数
+    var yyxnumber=0;                                //用于存储判定左上至右下相同个数
+    var xxynumber=0;                                //用于存储判定左下至右上相同个数
+
+    var xxxnum=0;                                //用于存储判定横向相同个数                //绿色方
+    var yyynum=0;                                //用于存储判定纵向相同个数
+    var yyxnum=0;                                //用于存储判定左上至右下相同个数
+    var xxynum=0;                                //用于存储判定左下至右上相同个数
+
+    var th=document.getElementsByTagName('th');
+    for(var i=0;i<a*a;i++) {                 //为每一个表格添加点击事件
+        th[i].setAttribute('flag','1');          //设置flag属性防止重复点击使得下方num计数出错并改变颜色
+        times=i+1;
+        th[i].setAttribute('index',times);               //为每个表格设置第几个格子，用于点击之后运行判定逻辑
+        th[a].setAttribute('flag','4');                //这个格子是一个bug，我直接去了，有好的处理方法可以私信我
+        th[a].innerHTML='BUG';
+        th[i].onclick = function () {
+            if(this.getAttribute('flag') =='1'){
+                var pandingA=parseInt(this.getAttribute('index'));      //获取该点击元素第几个格子数并转化为数字
+                var xxxleft=pandingA%a;                                 //获取该点击事件在的第几个格子
+                var yyytop=parseInt(pandingA-xxxleft)/a+1;              //获取该点击事件所在的列数
+                if(num%2==0){
+                    this.style.background = 'red';
+                    this.setAttribute('flag','2');    //绑定一个flag属性来避免再次点击，单双次点击设置flag值不同，用于执行点击后的逻辑判定是否胜出
+
+                    for(var k=1;k<=xxxleft;k++){                  //向左判定           这里小于等于，最后得到的结果是除了这个其余相同的四个
+                        if(pandingA-k>(yyytop-1)*a&&th[pandingA-k-1].getAttribute('flag')=='2'&&k<=4){          //这里-1是因为要得到的是下标，而不是盒子个数
+                            xxxnumber++;                             //红色flag属性是2，绿色是3     // 设置左边界
+                        }else{                                       //flag=1是初始属性，避免获取不到我提前设置了，结束会变成4，就 不可以点击了
+                            break;                                   //红绿的判定机制一样，只是在获取点击判定时的值设置的不同还有flag
+                        }
+                    }
+                    for(var k1=0;k1<a-xxxleft;k1++){                           //向右判定
+                        if(pandingA+k-1<=yyytop*a) {                          //设置右边界
+                            if(th[pandingA+k1].getAttribute('flag')=='2'&&k1<=4){
+                                xxxnumber++;
+                            }
+                        }else{
+                            break;
+                        }
+                    }
+                    for(var k=1;k<yyytop;k++){                  //向上判定             //这里小于，得到yyynumber的结果是相同的五个
+                        if(th[pandingA-k*a-1].getAttribute('flag')=='2'){       //这里-1是因为要得到的是下标，而不是盒子个数
+                            yyynumber++;
+                        }else{
+                            break;
+                        }
+                    }
+                    for(var m=0;m<=(a-yyytop-1);m++){                     //向下判定
+                        if(th[pandingA+m*a-1].getAttribute('flag')=='2'){
+                            yyynumber++;
+                        }else{
+                            break;
+                        }
+                    }
+                    for(var k=1;k<yyytop;k++){                  //向左上判定
+                        if(th[pandingA-k*a-1-k].getAttribute('flag')=='2'){       //这里-1是因为要得到的是下标，而不是盒子个数
+                            yyxnumber++;
+                            console.log(yyynumber)
+                        }else{
+                            break;
+                        }
+                    }
+                    for(var m=0;m<=(a-yyytop-1);m++){                      //向右下判定
+                        if(th[pandingA+m*a-1+m].getAttribute('flag')=='2'){
+                            yyxnumber++;
+                        }else{
+                            break;
+                        }
+                    }
+                    for(var k=1;k<yyytop;k++){                  //向右上判定
+                        if(th[pandingA-k*a-1+k].getAttribute('flag')=='2'){       //这里-1是因为要得到的是下标，而不是盒子个数
+                            xxynumber++;
+                        }else{
+                            break;
+                        }
+                    }
+                    for(var m=0;m<=(a-yyytop-1);m++){             //向左下下判定
+                        if(th[pandingA+m*a-1-m].getAttribute('flag')=='2'){
+                            xxynumber++;
+                        }else{
+                            break;
+                        }
+                    }
+                    //最后结果返回或每次点击没赢就判定计数为0
+                    if(xxxnumber>=4||yyynumber>=5||yyxnumber>=4||xxynumber>=5){
+                        alert('红方胜出');
+                        for(var t=0;t<a*a;t++){
+                            th[t].setAttribute('flag','4')                           //设置flag为4，用于封盘
+                        }
+                    }else{
+                        xxxnumber=0;
+                        yyynumber=0;
+                        yyxnumber=0;
+                        xxynumber=0;
+                    }
+                    num++;                                                         //这个计数是为了给每次计数，用于区分单双次
+                }else if(num%2!=0){
+                    this.style.background = 'green';
+                    this.setAttribute('flag','3');    //绑定一个flag属性来避免再次点击,并用于检测胜负
+                    for(var k=1;k<=xxxleft;k++){                  //向左判定           这里小于等于，最后得到的结果是除了这个其余相同的四个
+                        if(pandingA-k>(yyytop-1)*a&&th[pandingA-k-1].getAttribute('flag')=='3'&&k<=4){          //这里-1是因为要得到的是下标，而不是盒子个数
+                            xxxnum++;                                                                        //设置左边界
+                        }else{
+                            break;
+                        }
+                    }
+                    for(var k1=0;k1<a-xxxleft;k1++){                           //向右判定
+                        if(pandingA+k-1<=yyytop*a) {                          //设置右边界
+                            if(th[pandingA+k1].getAttribute('flag')=='3'&&k1<=4){
+                                xxxnum++;
+                            }
+                        }else{
+                            break;
+                        }
+                    }
+                    for(var k=1;k<yyytop;k++){                  //向上判定             //这里小于，得到yyynumber的结果是相同的五个
+                        if(th[pandingA-k*a-1].getAttribute('flag')=='3'){       //这里-1是因为要得到的是下标，而不是盒子个数
+                            yyynum++;
+                        }else{
+                            break;
+                        }
+                    }
+                    for(var m=0;m<=(a-yyytop-1);m++){                     //向下判定
+                        if(th[pandingA+m*a-1].getAttribute('flag')=='3'){
+                            yyynum++;
+                        }else{
+                            break;
+                        }
+                    }
+                    for(var k=1;k<yyytop;k++){                  //向左上判定
+                        if(th[pandingA-k*a-1-k].getAttribute('flag')=='3'){       //这里-1是因为要得到的是下标，而不是盒子个数
+                            yyxnum++;
+                        }else{
+                            break;
+                        }
+                    }
+                    for(var m=0;m<=(a-yyytop-1);m++){                      //向右下判定
+                        if(th[pandingA+m*a-1+m].getAttribute('flag')=='3'){
+                            yyxnum++;
+                        }else{
+                            break;
+                        }
+                    }
+                    for(var k=1;k<yyytop;k++){                  //向右上判定
+                        if(th[pandingA-k*a-1+k].getAttribute('flag')=='3'){       //这里-1是因为要得到的是下标，而不是盒子个数
+                            xxynum++;
+                        }else{
+                            break;
+                        }
+                    }
+                    for(var m=0;m<=(a-yyytop-1);m++){             //向左下下判定
+                        if(th[pandingA+m*a-1-m].getAttribute('flag')=='3'){
+                            xxynum++;
+                        }else{
+                            break;
+                        }
+                    }
+                    //最后结果返回或每次点击没赢就判定计数为0
+                    if(xxxnum>=4||yyynum>=5||yyxnum>=4||xxynum>=5){
+                        alert('绿帽子拿走');
+                        for(var t=0;t<a*a;t++){
+                            th[t].setAttribute('flag','4')                           //设置flag为4，用于封盘
+                        }
+                    }else{
+                        xxxnum=0;
+                        yyynum=0;
+                        yyxnum=0;
+                        xxynum=0;
+                    }
+                    num++;
+                }
+            }
+        }
+    }
+
+    function pox(x,y){                     //输入棋盘的xy轴各有多少列设置表格
+        var table=document.createElement('table');
+        x=x>30?30:x<10?10:x;
+        y=y>30?30:y<10?10:y;
+        for(var i=0;i<y;i++){
+            var tr=document.createElement('tr');
+            table.appendChild(tr);
+            for(var k=0;k<x;k++){
+                var th=document.createElement('th');
+                tr.appendChild(th);
+            }
+        }
+        return table;
+    }
+</script>
+
+</body>
+</html>

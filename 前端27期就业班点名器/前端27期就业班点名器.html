@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<!--1.HTML5的文档约束-->
+<html>
+
+<head>
+	<!--2.三个meta文件-->
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width,initial-scale=2,minimum-scale=1,maximum-scale=5,user-scalable=yes" />
+	<title></title>
+
+	<!--3.bootstrap的css文件-->
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+	<!--4.JQuery类库-->
+	<script src="js/jquery-1.11.3.js" type="text/javascript" charset="utf-8"></script>
+	<!--5.bootstarp类库-->
+	<script src="js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+	<style type="text/css">
+		.bor {
+			border: 3px solid #D9EDF7;
+			border-radius: 16px;
+			background-color: #D9EDF7;
+		}
+
+		.top {
+			margin-top: 30px;
+		}
+
+		.length {
+			width: 276px;
+			height: 40px;
+			margin-bottom: 15px;
+		}
+
+		.topHeadTop {
+			margin-top: 16px;
+		}
+
+		.contentDiv {
+			height: 50px;
+		}
+
+		.contentBtn {
+			height: 40px;
+			width: 80px;
+		}
+
+		.contentFontColor {
+			color: #6E6EAB;
+		}
+
+		.contentAlign {
+			align-content: center;
+		}
+
+		.footerMargin {
+			margin-top: 10px;
+			margin-bottom: 20px;
+		}
+	</style>
+	<script type="text/javascript">	
+		var temp = 0
+		var names = new Array(
+			'高文进',
+			'李海霖',
+			'吴柳柳',
+			'张冬丽',
+			'龚济美',
+			'孟维仁',
+			'李洲杰',
+			'刘扬',
+			'王蕴安',
+			'梁义钢',
+			'张家峰',
+			'朱雪婷',
+			'吴晨雨',
+			'黄磊',
+			'周泉江',
+			'刘毛毛',
+			'黄志鹏',
+			'韦潘兰',
+			'周泽钦',
+			'陈雨',
+			'张程',
+			'林泽涛',
+			'张小刚',
+			'胡粤',
+			'危唯',
+			'余月朋',
+			'刘诗伟',
+			'蓝冠明',
+			'罗庆',
+			'李恒',
+			'李佳蔚',
+			'蒋捷',
+			'胡小洋',
+			'李兴',
+			'曹杰',
+			'张培嘉',
+			'朱象力',
+			'詹增锐',
+			'刘伟',
+			'朱丽瑶',
+			'易俊赢',
+			'张金健',
+			'吴伟镇',
+			'李青龙',
+			'李静',
+			'蒙俣傧',
+			'陈焕',
+			'许文学',
+			'姜坦承',
+			'陈锋',
+			'侯小芬',
+			'李雪',
+			'李树浓',
+			'申天浪',
+			'陶卫招',
+			'孙玉成',
+			'袁金英',
+			'朱志龙',
+			'陈炜',
+			'陶攀',
+			'邓吉田',
+			'刘威',
+			'和肖阳',
+			'杨诗喆',
+			'詹世辉',
+			'韩文俊');
+		$(function () {
+			//1.页面元素对象构造
+			//1.1 容器和行
+			var $conter = $("<div></div>");
+			$conter.addClass("container top bor");
+
+			for (var i = 0; i < 3; i++) {
+				var $rown = $("<div></div>");
+				$rown.addClass("row");
+				$rown.prop("id", "row" + (i + 1));
+
+				$rown.appendTo($conter);
+				$conter.appendTo($("body"));
+			}
+
+			//1.2 插第一row
+			var $divHead = $("<div></div>");
+			$divHead.addClass("col-lg-12  col-sm-12 col-md-12 col-sx-12 topHeadTop");
+			var $h2 = $("<h2 align='center'></h2>");
+			var $bf = $("<b>$生死有命富贵在天$</b>");
+
+			$bf.addClass("contentFontColor");
+
+			$bf.appendTo($h2);
+			$divHead.append($h2);
+			$("#row1").append($divHead);
+
+			//1.2.1 隐藏信息显示栏
+			var $divHeadRight = $("<div></div>");
+			$divHeadRight.addClass("col-lg-3 col-lg-offset-8");
+
+			var $hri = $("<input/>");
+			$hri.addClass("form-control length navbar-right")
+			$hri.prop("id", "inputHeadRight");
+			$hri.prop("placeholder", "大神姓名");
+			$hri.prop("disabled", "disabled");
+
+			$hri.appendTo($divHeadRight);
+			$divHeadRight.appendTo($("#row1"));
+
+
+			//1.3 插入主体部分，第二row
+			$.each(names, function (index, ele) {
+				var $div = $("<div></div>");
+				$div.addClass("col-lg-1  col-sm-1 col-md-1 col-sx-1 contentDiv ");
+
+				var $inp = $("<input/>");
+				$inp.addClass("btn btn-default contentBtn contentFontColor");
+				$inp.prop("id", "num" + index);
+				$inp.val(this);
+
+				$div.append($inp);
+				$("#row2").append($div);
+			});
+
+			//1.4 插入底部按钮，第三row
+			var $divFooter = $("<div></div>");
+			$divFooter.addClass("col-lg-6 col-lg-offset-3");
+
+			var $btn = $("<buton></button>");
+			$btn.addClass("btn btn-primary btn-lg btn-block footerMargin");
+			$btn.prop("id", "dianJi");
+			$btn.text("开始点击");
+
+			$divFooter.append($btn);
+			$("#row3").append($divFooter);
+
+			//2.第二部，按钮绑定点击事件
+			//2.1 初始化点击事件所需数据
+			var cimi = 1;
+			for (var i = 0; i < (names.length + "").length; i++) {
+				cimi *= 10;
+			}
+			var timer = null;
+			var $dianJI = $("#dianJi");
+			//2.2 绑定点击事件
+			$dianJI.click(function () {
+				if (timer == null) {
+					$dianJI.html("停止点名");
+					start();
+				} else {
+					$dianJI.html("开始点名");
+
+					//停止事假触发
+					for (var i = 4; i < 13; i++) {
+						var times = 3 * i * i * i;
+
+						setTimeout(stop, times);
+
+
+					};
+
+
+					clearTimeout(timer);
+					timer = null;
+				}
+			});
+			//2.3 随机改变active样式，同时显示该对象学生信息
+			function start() {
+				$("input").removeClass("active");
+
+				var num = Math.floor(Math.random() * cimi % names.length);
+				var inp = $("#num" + num);
+
+				inp.addClass("active");
+				$("#inputHeadRight").prop("placeholder", inp.val() /*+"："+genders[num]*/ );
+
+				timer = setTimeout(start, 100);
+			}
+
+			//2.4停止点名函数,点击停止9次之后停止调用时间定时器
+			var count = 9;
+
+			function stop() {
+				count--;
+				$("input").removeClass("active");
+
+				var num = Math.floor(Math.random() * cimi % names.length);
+
+
+				if (temp == 0) {
+					var inp = $("#num" + num);
+
+
+					inp.addClass("active");
+					if (count == 0) {
+						if (temp != num) {
+							inp.css("background-color", "red");
+							count = 9;
+							var removeName = $(names).remove(inp.val());
+							//							console.log(removeName);
+							temp = num;
+							console.log("第一次是:" + temp)
+
+
+						} else {
+							stop()
+						}
+
+					}
+					$("#inputHeadRight").prop("placeholder", inp.val() /*+"："+genders[num]*/ );
+				} else {
+					var inp = $("#num" + num);
+
+
+					inp.addClass("active");
+					if (count == 0) {
+						if (temp != num) {
+							inp.css("background-color", "red");
+							count = 9;
+							var removeName = $(names).remove(inp.val());
+							temp = num;
+							console.log("第一次是:" + temp)
+						} else {
+							stop()
+						}
+					}
+					$("#inputHeadRight").prop("placeholder", inp.val() /*+"："+genders[num]*/ );
+				}
+			}
+
+			//清除单个人名按钮点击事件时的重复active样式，并显示该元素学生信息。
+			$("input").click(function () {
+				$("input").removeClass("active");
+				$(this).addClass("active");
+				var thId = $(this).prop("id");
+				var num = parseInt(thId.substr(3));
+				$("#inputHeadRight").prop("placeholder", this.value /*+"："+genders[num]*/ );
+			});
+		});
+	</script>
+</head>
+
+<body>
+</body>
+
+</html>

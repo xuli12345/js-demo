@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="cssStyle.css">
+</head>
+<body>
+<div id="bigbox">
+    <ul style="display: none;">
+        <li class="row" id="row1"><a href="#"></a><a href="#"></a><a href="#"></a></li>
+        <li class="row" id="row2"><a href="#"></a><a href="#"></a><a href="#"></a></li>
+        <li class="row" id="row3"><a href="#"></a><a href="#"></a><a href="#"></a></li>
+        <li class="row" id="row4"><a href="#" id="aKey"></a><a href="#" id="sKey"></a><a href="#" id="dKey"></a></li>
+    </ul>
+    <div id="mask"> </div>
+    <input type="button" id="start" value="开始">
+    <div id="tipsBox">
+        <h1></h1>
+        <h2></h2>
+        <h3>已消除方块个数</h3>
+    </div>
+    <div id="keyList">
+        <div id="keyBox1">A</div>
+        <div id="keyBox2">S</div>
+        <div id="keyBox3">D</div>
+    </div>
+</div>
+<div id="failedBox" style="display: none;">
+    <h3></h3>
+    <h3>要再接再厉鸭!~</h3>
+    <p>(&nbsp;点我重新开始挑战鸭&nbsp;)</p>
+</div>
+<div id="howPlay">
+    <p>游戏名:别踩白块</p>
+    <p>难度:共有6级,每隔一段时间第一行会生成新的黑块,每提升一级,黑块的下降速度会加快,每消除20个黑块自动提升一级</p>
+    <p>操作:1.第四行的三个格子对应ASD三个键,每按下对应键就可以消除对应位置的黑块,如果踩到了没有黑块的格子,挑战失败!</p>
+    <p>操作:2.除了ASD三个键,还可以用鼠标点击的鸭</p>
+    <div id="pic"><img src="鸭.gif" alt=""></div>
+</div>
+<script src="common.js"></script>
+<script src="函数封装.js"></script>
+<script>
+    /**需求分析
+     * 1.先搭好架子(4*3)
+     * 2.当点击开始按钮后,执行动画,动画结束后从第一行开始出现随机黑块,每行只出现一个
+     * 3.每隔2秒,将原本行的黑块移动到下一行,第一行重新生成新的随机黑块,
+     * 3.1 当黑块移动到第四行时,按下对应的asd键,或鼠标点击都可以清除第四行的对应位置的黑块,按键时让左边按钮高亮
+     * 4.如果在生成新的黑块前,没有清除第四行的黑块,则提示挑战失败
+     * 4.1如果按了或点击了除了第四行对应黑块的按键外的键,则提示挑战失败
+     * 5.当第四行消除后,立即将第一二三行代码下移,并生成新的第一行黑块
+     * 5.除了第四行的黑块,其余的黑块都是不能点击的,没有鼠标样式
+     * 6.用一个计时器记录消除个数,点击开始按钮后开始,每次失败时清空
+     * 7.失败后,弹出失败窗口,点击弹窗后,弹窗消失,初始化界面,并自动重新开始游戏
+     */
+    var ul = document.getElementsByTagName('ul')[0];
+    var row1 = id('row1');
+    var row4 = id('row4');
+    var rowList = ul.children;
+    var blockList = row1.children;
+    var timerID = null;
+    var aKey = id('aKey');
+    var sKey = id('sKey');
+    var dKey = id('dKey');
+    var start = id('start');
+    var mask = id('mask');
+    var tipsBox = id('tipsBox');
+    var sum = 0;
+    var hard = tipsBox.children[0];
+    var speed = tipsBox.children[1];
+    var hardLevel = 1;
+    var speedLevel = 1000;
+    var failedBox = id('failedBox');
+    var fTips = failedBox.children[0];
+    var isFailed = false;
+    var aList = ul.getElementsByTagName('a');
+    var keyList = id('keyList')
+    var keyBox1 = id('keyBox1');
+    var keyBox2 = id('keyBox2');
+    var keyBox3 = id('keyBox3');
+
+    //改变tips框里的内容
+    hard.innerText = '难度: ' + hardLevel;
+    speed.innerText = '每 ' + speedLevel/1000 + ' 秒一个';
+
+    //点击开始按钮后执行动画,动画结束后开启定时器
+    start.onclick = function (  ) {
+        animateSlow(mask,{
+            width:312,
+            height:493,
+            borderRadius:0
+        },function (  ) {
+            ul.style.display = 'block';
+            ul.style.zIndex = 1;
+            // tipsBox.style.display = 'block';
+            // keyList.style.display = 'block';
+            animateSlow(tipsBox,{
+                opacity:1
+            });
+            animateSlow(keyList,{
+                opacity:1
+            });
+            startTime();//点击按钮,遮罩层到达指定位置后,调用计时器函数
+
+            //获取按下的键的ascii码并转成对应键的字符串
+            //(这段代码原本放外面的,但是会产生一个问题:
+            // 动画未结束前按键的话就会触发失败提醒,但是计时器并不会停下,因此放里面)
+            document.onkeypress = function ( e ) {
+                //获取事件源的兼容性处理
+                e = e||window.event;
+                //判断是否已经失败(如已失败,不会再执行下面代码)
+                if (isFailed==true){
+                    return;
+                }
+                //获取ascii码的兼容性处理
+                var key = e.keyCode||e.charCode||e.which;
+                //ascii码转成键字符串
+                key = String.fromCharCode(key);
+                //调用isKey函数判断按下的键是否为a,s,d键
+                if (key=='a'){
+                    keyBox1.style.backgroundColor='#414141';
+                    isKey(aKey);
+                }else if (key=='s'){
+                    keyBox2.style.backgroundColor='#414141';
+                    isKey(sKey);
+                }else if (key=='d'){
+                    keyBox3.style.backgroundColor='#414141';
+                    isKey(dKey);
+                }
+                start.value = sum;
+                level();
+                document.onkeyup = function (  ) {
+                    if (key=='a'){
+                        keyBox1.style.backgroundColor='';
+                    }else if (key=='s'){
+                        keyBox2.style.backgroundColor='';
+                    }else if (key=='d'){
+                        keyBox3.style.backgroundColor='';
+                    }
+                }
+                console.log ( '当前速度为'+speedLevel+'毫秒每行');
+            }
+        });
+
+
+
+        //点击按钮后让按钮禁用,并且鼠标样式改为默认
+        start.disabled = false;
+        start.style.cursor= 'default';
+
+        //同时执行开始按钮的移动动画
+        animateSlow(start,{
+            top:280,
+            left:106,
+            width:80,
+            height:80
+        },function (  ) {
+            start.value = '0';
+            start.style.fontSize = '30px';
+        });
+    }
+
+    //遍历所有行和所有格子,将所有格子的点击事件返回false,取消跳转
+    for (var i = 0;i<rowList.length;i++){
+        for (var j = 0;j<blockList.length;j++){
+             rowList[i].children[j].onclick = function (  ) {
+                    return false;
+             }
+        }
+    }
+
+    //遍历并给第四行每一个格子并添加点击事件
+    for (var i = 0;i<blockList.length;i++){
+        row4.children[i].onclick = function (  ) {
+            //每次点击先清除上一次定时器
+            clearInterval(timerID);
+            if (this.className!='black'){//如果点击的格子没有black类,则弹出失败并清除定时器
+                clearInterval(timerID);
+                failed();
+            }else{//否则就清除上一次的定时器,执行一次下一行赋值函数,再调用定时器函数
+                clearInterval(timerID);
+                sum++;
+                start.value = sum;
+                next();
+                startTime();
+                level();
+            }
+        }
+    }
+</script>
+
+</body>
+</html>

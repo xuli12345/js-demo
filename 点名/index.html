@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #main,table {
+            width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+            color: #000;
+            /*background-color: #000;*/
+        }
+        #main {
+            height: 40px;
+            line-height: 40px;
+        }
+        table {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        .blank {
+            width: 50px;
+        }
+        .red{
+            background-color: red;
+        }
+        .tdstyle{
+            border: 1px solid black;
+            border-collapse: collapse;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="main">
+        <button id="start">开始</button>
+        <button id="end">结束</button>
+    </div>
+    <table id="student"></table>
+    <script src="js/common.js"></script>
+<script>
+    /*需求分析
+    第一步：点击鼠标开始，计算机随机在全班的姓名中随机闪现
+    第二步：点击鼠标结束，会选中一个学生姓名，继续点击开始重复上述操作
+    */
+    /*思路分析：1.学生所有姓名为一个数组，向表格中添加数据
+                      2.开始按钮：添加点击事件，添加计时器，随机产生一个数字，修改对应下标的td数组的样式
+                      3.结束按钮：清除计时器
+    * */
+    function id(ele){
+        return document.getElementById(ele);
+    }
+    function cE(ele){
+        return document.createElement(ele);
+    }
+    //1.学生信息存入数组
+    var data=['','徐娜','姚木徳','谢丽群','于晓慧','韩超','','','陶文鑫','刘棒','周隆','钟林波','蔡泉益',
+        '黎晶晶','冯鹏锦','卫涛','区志玲','钟林福','周林芳','','','姚观兴','庄雪芬','白东东','钟衍艳','李沛奇',
+        '','皮宇坤','甘文强','鲍芳','罗国平','曾俊君','','','阳新平','孔学明','黄嘉欣','万奕舟','李宝怡',
+        '刘天福','肖坦中','郑茂如','宋秀菲','张维','欧阳冬萍','','','刘海涛','林宏菲','郑璐','何龙杰','龙凤章',
+        '','胡健','刘芳玲','肖奇明','柏东升','曾钰婷','','','曹盼','张宇达','郑伟鹏','陆秋妍','李亚鹏',
+        '','文冬成','杨亚','黄雪雨','高苗','匡鹏','','','李刚涛','杨振','涂画','曾嘉豪','张健发',
+        '张健发','丁梓习','周依方','蔡泽豪','张露思','杨亚','','','彭娜','陈杰','黄浩','成平','易泽港',
+        '','朱原正','荣文学','陈明兰','王龙','姚希琳','','','曹淑芳','周洋毅','王彬','王成','刘乔峰',
+        '','谬智强','刘青青','李勇桦','张胜','陆毅标','','','匡智勇','康冲宇','王慰硕','汤天怡','王锦平',
+        '','袁世文','蒙培峰','吴方娇','张容','和启洋','','','彭爽','谭栖','刘龙明','覃惠玲','宋文翔' ];
+    //2.获取元素
+    var start=id('start');//开始按钮
+    var end=id('end');//结束按钮
+    var table=id('student');//学生表格
+    //3.学生姓名加入到表格中，并把存放学生信息的每个td存入一个数组中用于修改样式
+    var k=0;
+    var tdList=[];//存放每个学生信息的td数组
+    for(var i=0;i<10;i++){//表格10行
+        var tr=cE('tr');
+        for(var j=0;j<13;j++){//表格13列
+            var td=cE('td');
+            tdList[k]=td;//此数组为了存td标签
+            if(data[k]==''){//判断空格
+              td.className='blank';
+            }else{
+                td.className='tdstyle';
+            }
+            setText(td,data[k]);
+            k++;
+            tr.appendChild(td);
+        }
+        table.appendChild(tr);
+    }
+    //4.开始按钮：添加点击事件，添加计时器
+    var timeID=null;
+    var select;
+        start.onclick=function(){
+            timeID=setInterval(function(){
+                var num=Math.floor(Math.random()*130); //随机产生一个名字
+                if(data[ num ]  != '' ){//如果取出的值不为空
+                    if( select) select.className='tdstyle';//改变上次选择的名字的样式
+                    select= tdList[num];
+                    select.className +=' red';//随机选中的名字的td标签添加一个样式
+                }
+            },100);
+        }
+    //5.结束按钮：清除计时器
+    end.onclick=function(){
+            clearInterval(timeID);
+    }
+</script>
+</body>
+</html>

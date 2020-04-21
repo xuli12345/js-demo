@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {margin: 0;padding: 0;}  
+        .box {
+            position:relative;      
+                top: 100px;          
+                width:300px;          
+                height: 300px;          
+                margin: 0 auto;          
+                background-color: #ccc;     
+                     /* 透视效果 越大透视距离越平面，反之亦然  */         
+                      perspective:800px;         
+                    }    
+        .content {          /*3d视图*/          
+            transform-style: preserve-3d;  
+                    /*过度动画*/          
+            transition: all 3s linear;          
+            width:200px;          
+            height: 200px;          
+            position: absolute;          
+            top: 50px;       
+            left: 50px;         
+        }        
+         /*          经过顺时针旋转         */      
+        .content:hover {   
+            transform: rotateX(180deg) rotateY(180deg);         
+        }       
+        /*          方块公共样式         */       
+        .side {          
+            position: absolute;       
+            height: 200px;       
+            width: 200px;       
+            border: 2px solid #000;       
+            background: rgba(32, 153, 103, 0.3);       
+            color: #fff;       
+            line-height: 200px;       
+            font-size: 30px;       
+            font-weight: bold;       
+            text-align: center;       
+            text-shadow: 0 -1px 0 rgba(0,0,0,0.2);         
+        }        
+        /*          前         */   
+        .side1 {           
+            transform: translateZ(100px);         
+        }   
+         /*          后         */     
+        .side2 {          
+            transform: rotateX(180deg) translateZ(100px);         
+        }        
+        /*          左         */   
+        .side3 {          
+            transform: rotateY(-90deg) translateZ(100px);         
+        }   
+        /*          右         */        
+        .side4 {          
+            transform: rotateY(90deg) translateZ(100px);         
+        }  
+        /*          上         */    
+        .side5 {          
+            transform: rotateX(90deg) translateZ(100px);         
+        }        
+        /*          下         */     
+        .side6 {          
+            transform: rotateX(-90deg) translateZ(100px);         
+        }
+    </style>
+</head>
+<body>
+        <div class="box"> 
+                <div class="content">
+                    <div class="side side1">1</div>
+                    <div class="side side2">2</div>
+                    <div class="side side3">3</div>
+                    <div class="side side4">4</div>
+                    <div class="side side5">5</div>
+                    <div class="side side6">6</div>
+                </div>
+                </div>
+</body>
+</html>
